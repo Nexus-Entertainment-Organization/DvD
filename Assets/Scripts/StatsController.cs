@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class StatsController : MonoBehaviour
     static bool inBattle;
     SceneStuff stuff;
     [SerializeField] GameObject dieGuy;
+    public bool throwDice;
 
     private void Awake()
     {
@@ -32,7 +34,6 @@ public class StatsController : MonoBehaviour
         strainImage.offsetMax = backImage.offsetMax - new Vector2(width, 0);
 
         inBattle = true;
-        StartCoroutine(ExaustionBuildup());
 
         stuff.gameObject.SetActive(false);
     }
@@ -73,16 +74,6 @@ public class StatsController : MonoBehaviour
         }
     }
 
-    IEnumerator ExaustionBuildup()
-    {
-        yield return new WaitForSeconds(10);
-        if (inBattle)
-        {
-            AddExhaustion(1);
-            StartCoroutine(ExaustionBuildup());
-        }
-    }
-
     public void TakeAToll(int amount)
     {
         if (inBattle)
@@ -94,6 +85,11 @@ public class StatsController : MonoBehaviour
             {
                 inBattle = false;
                 StartCoroutine(QueueReload("You ran out of energy", gameObject.CompareTag("Player")));
+            }
+            else if(energyImage.offsetMax.x >= backImage.offsetMax.x)
+            {
+                toll = 0;
+                energyImage.offsetMax = backImage.offsetMax - new Vector2(toll, 0);
             }
         }
     }
@@ -114,9 +110,10 @@ public class StatsController : MonoBehaviour
 
     public void RollTotal(DiceController dice)
     {
+        Transform diceRoot = dice.diceInput.transform.root;
         if (dice.errorBox.isActiveAndEnabled == false)
         {
-            Button button = dice.GetComponentInChildren<Button>();
+            Button button = diceRoot.GetComponentInChildren<Button>();
             button.interactable = false;
 
             DiceStats stats = dice.GetDice();
@@ -154,17 +151,65 @@ public class StatsController : MonoBehaviour
             die.transform.localPosition = new Vector2(xOffset, yOffset);
 
             Rigidbody2D body = die.GetComponent<Rigidbody2D>();
-            if (die.CompareTag("Player"))
-            {
-                body.gravityScale = 50;
-            }
-            else
-            {
-                body.gravityScale = -50;
-            }
+            body.gravityScale = 0;
 
             yield return new WaitForSeconds(0.05f);
         }
-        button.interactable = true;
+
+        while(throwDice == false)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        string[] nonAttacking = new string[] {"heal", "test" };
+
+        if(gameObject.CompareTag("Player") && nonAttacking.Contains(Ability.GetSelectedAbility()))
+        {
+            DieCode[] dice = GetComponentsInChildren<DieCode>();
+            DieCode[] diceProcs = Ability.HandleProcs(dice);
+
+            foreach (DieCode die in dice)
+            {
+                if ( diceProcs.Contains(die))
+                {
+                    switch (Ability.GetSelectedAbility())
+                    {
+                        case "heal":
+                            Ability.Heal(1);
+                            break;
+
+                        default:
+                            Debug.LogError("Unhandled NonAttacking Ability");
+                            break;
+                    }
+                }
+                
+                Destroy(die.gameObject);
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+        else
+        {
+            foreach (DieCode die in GetComponentsInChildren<DieCode>())
+            {
+                Rigidbody2D body = die.GetComponent<Rigidbody2D>();
+
+                if (die.CompareTag("Player"))
+                {
+                    body.gravityScale = 50;
+                }
+                else
+                {
+                    body.gravityScale = -50;
+                }
+
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+
+        AbilitySelector.ChooseAbility(); //Uncertain if I want this here
+
+        button.interactable = true; //need to change this to check for chain to finish
+
     }
 }

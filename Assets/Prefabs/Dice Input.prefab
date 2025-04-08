@@ -1307,7 +1307,7 @@ MonoBehaviour:
         m_MethodName: RollTotal
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 7559751775284910411}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: DiceController, Assembly-CSharp
           m_IntArgument: -1
           m_FloatArgument: 0
@@ -1319,7 +1319,7 @@ MonoBehaviour:
         m_MethodName: RollTotal
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 7559751775284910411}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: DiceController, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1465,7 +1465,6 @@ GameObject:
   - component: {fileID: 5142316633740892248}
   - component: {fileID: 9029973024586870577}
   - component: {fileID: 5999610287029424236}
-  - component: {fileID: 7559751775284910411}
   m_Layer: 5
   m_Name: Dice Input
   m_TagString: Untagged
@@ -1557,28 +1556,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7559751775284910411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4832038111676995182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 739c14c2d7403854fbe835b78bf7e18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  diceTexbox: {fileID: 9092584119129308008}
-  diceDropdown: {fileID: 971150288110424308}
-  errorBox: {fileID: 6832063521597628413}
-  sizeShapes:
-  - {fileID: 3714699613735978868, guid: c7f7870a94b7cc540a4477a03b50d416, type: 3}
-  - {fileID: 2128861675711570616, guid: f2610de7ebe96ac4e84403f246ae39bc, type: 3}
-  - {fileID: 5514504787293044003, guid: b3115deb5ff236147a1f3f995fd34deb, type: 3}
-  - {fileID: 1620607694837443053, guid: 89e697c2635cf3e4d95f100059cf7694, type: 3}
-  - {fileID: -8453941442291905645, guid: bd088bda29f67cf4b9c22a19030d240f, type: 3}
-  - {fileID: -7448585877341632886, guid: b4a80c9e37a3ded4084e89ce467db8a6, type: 3}
 --- !u!1 &4850799420156051027
 GameObject:
   m_ObjectHideFlags: 0

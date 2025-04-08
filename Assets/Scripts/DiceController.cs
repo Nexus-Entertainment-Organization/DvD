@@ -7,6 +7,7 @@ public class DiceController : MonoBehaviour
 {
     public TextMeshProUGUI diceTexbox;
     public TMP_Dropdown diceDropdown;
+    public TMP_InputField diceInput;
     int tempSize, tempCount;
     int[] diceSizes = { 4, 6, 8, 10, 12, 20 };
     public TextMeshProUGUI errorBox;
@@ -15,9 +16,8 @@ public class DiceController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        TMP_InputField input = diceTexbox.transform.parent.GetComponentInChildren<TMP_InputField>();
-        input.onValueChanged.AddListener(ValueChanged);
-        input.onEndEdit.AddListener(ValueSubmitted);
+        diceInput.onValueChanged.AddListener(ValueChanged);
+        diceInput.onEndEdit.AddListener(ValueSubmitted);
         diceDropdown.onValueChanged.AddListener(SaveDiceSize);
         ResetDice();
     }
@@ -165,7 +165,7 @@ public class DiceController : MonoBehaviour
         {
             if (isSubmit)
             {
-                GetComponentInChildren<TMP_InputField>().text = GetComponentInChildren<TMP_InputField>().text.Trim();
+                diceInput.text = diceInput.text.Trim();
             }
             ResetDice();
         }
